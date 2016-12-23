@@ -10,8 +10,8 @@ class Peptide:
     self.peptide = peptide
     self.charge = charge
     self.length = len(peptide)
-    self.min = self.min_mass(self)
-    self.max = self.max_mass(self)
+    self.min = self.min_mass()
+    self.max = self.max_mass()
 
   def min_mass(self):
     b = mass.get_aa_mass(self.peptide[0])
@@ -21,7 +21,7 @@ class Peptide:
   def max_mass(self):
     b = 0
     y = 0
-    for i in (0, len(self.peptide) - 1):
+    for i in (0, len(self.peptide) - 2):
       b += mass.get_aa_mass(self.peptide[i])
       y += mass.get_aa_mass(self.peptide[i + 1])
     return max(b, y)
