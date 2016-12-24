@@ -21,7 +21,7 @@ class Peptide:
   def max_mass(self):
     b = 0
     y = 0
-    for i in (0, len(self.peptide) - 2):
+    for i in range(0, len(self.peptide) - 1):
       b += mass.get_aa_mass(self.peptide[i])
       y += mass.get_aa_mass(self.peptide[i + 1])
     return max(b, y)
@@ -48,7 +48,7 @@ class Peptide:
   def n_x(self, i, x):
     if 0 < i - 3:
       s = 0
-      for n in (0, i - 3):
+      for n in range(0, i - 3):
         if aa == x:
           s += 1
       return s
@@ -57,7 +57,7 @@ class Peptide:
   def c_x(self, i, x):
     if len(self.peptide) > i + 3:
       s = 0
-      for n in (i + 3, len(self.peptide)):
+      for n in range(i + 3, len(self.peptide)):
         if aa == x:
           s += 1
       return s
