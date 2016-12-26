@@ -30,16 +30,20 @@ class Peptide:
   Peak location features
   """
   def min_peak_mass(self, peak):
-    if 0 < peak and peak < len(self.peptide):
+    if -1 < peak and peak < len(self.peptide):
       return mass.get_aa_mass(self.peptide[peak]) - self.min
+    return -1
 
   def max_peak_mass(self, peak):
-    if 0 < peak and peak < len(self.peptide):
+    if -1 < peak and peak < len(self.peptide):
       return self.max - mass.get_aa_mass(self.peptide[peak])
+    return -1
 
   def relative_peak_mass(self, peak):
-    return (self.peptide[peak] - min_peak_mass(peak))\
-         / (max_peak_mass(peak) - min_peak_mass(peak))
+    if -1 < peak and peak < len(self.peptide):
+      return (mass.get_aa_mass(self.peptide[peak]) - self.min_peak_mass(peak))\
+           / (self.max_peak_mass(peak) - self.min_peak_mass(peak))
+    return -1
 
   """
   Peptide composition features
@@ -52,6 +56,7 @@ class Peptide:
         if aa == x:
           s += 1
       return s
+    return -1
 
   # number of x from i + 3 to c-term
   def c_x(self, i, x):
@@ -61,6 +66,7 @@ class Peptide:
         if aa == x:
           s += 1
       return s
+    return -1
 
   """
   Hydrophobicity
@@ -69,9 +75,9 @@ class Peptide:
   def hydf(self):
     s = 0
     for aa in self.peptide:
-      hydph = hydph.get_aa_hydph(aa)
-      if hydph > 0:
-        s += hydph
+      h = hydph.get_aa_hydph(aa)
+      if h > 0:
+        s += h
     return s
 
   # The average hydrophobicity of the amino acids
