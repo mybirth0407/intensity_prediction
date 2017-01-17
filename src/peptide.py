@@ -4,15 +4,22 @@ Feature extraction from peptides
 
 import mass_table as mass
 import hydph_table as hydph
+import re
+
 
 class Peptide:
   def __init__(self, peptide, charge):
-    self.peptide = peptide
+    self.peptide = self.get_strip_sequence(peptide)
     self.charge = charge
-    self.length = len(peptide)
+    self.length = len(self.peptide)
     self.min = self.min_mass()
     self.max = self.max_mass()
 
+  # get strip sequence
+  def get_strip_sequence(self, peptide):
+    p = re.compile("[^a-zA-Z]")
+    return p.sub('', peptide)
+    
   def min_mass(self):
     b = mass.get_aa_mass(self.peptide[0])
     y = mass.get_aa_mass(self.peptide[self.length - 1])
@@ -70,6 +77,7 @@ class Peptide:
 
   """
   Hydrophobicity
+  # TODO: 소수성 아미노산 찾기
   """
   # The sum of the hydrophobic amino acids in the peptide
   def hydf(self):
@@ -128,3 +136,4 @@ class Peptide:
     for aa in self.peptide:
       s += hydph.get_aa_hydph(aa)
     return s
+
