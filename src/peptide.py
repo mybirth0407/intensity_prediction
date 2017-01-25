@@ -6,6 +6,7 @@ import mass_table as mass
 import hydph_table as hydph
 import re
 
+import unittest
 
 class Peptide:
   def __init__(self, peptide, charge):
@@ -77,7 +78,6 @@ class Peptide:
 
   """
   Hydrophobicity
-  # TODO: 소수성 아미노산 찾기
   """
   # The sum of the hydrophobic amino acids in the peptide
   def hydf(self):
@@ -136,4 +136,19 @@ class Peptide:
     for aa in self.peptide:
       s += hydph.get_aa_hydph(aa)
     return s
+
+
+class MyTest(unittest.TestCase):
+    def setUp(self):
+        self.pep = Peptide("AM+15.995C", 3)
+        
+    def test_hydf(self):
+        self.assertAlmostEqual(self.pep.hydf(), 5.89)
+    
+    def test_nterm_is_x_true(self):
+        self.assertAlmostEqual(self.pep.nterm_is_x('A'), 1) # 1 is true
+    
+    def test_nterm_is_x_false(self):
+        self.assertAlmostEqual(self.pep.nterm_is_x('X'), 0) # 1 is true
+        
 
