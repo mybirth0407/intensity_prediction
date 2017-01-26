@@ -5,11 +5,11 @@ Reading tsv file
 import csv
 import re
 
-def read_data():
+def read_tsv():
   p = re.compile("[^a-zA-Z]")
   with open("../SulfenM/mzid/MSGF_MergedFDR.tsv", 'r') as tsv:
     tsv = csv.reader(tsv, delimiter='\t')
-    # First line is 
+    # First line is no data
     next(tsv)
 
     peptide = []
@@ -25,3 +25,5 @@ def read_data():
       # peptide
       peptide.append(line[9])
     return peptide, charge
+
+# def get_peptide_intensity():
