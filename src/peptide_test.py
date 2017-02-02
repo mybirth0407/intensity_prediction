@@ -1,3 +1,7 @@
+"""
+Peptide test class
+"""
+
 from peptide import *
 import pytest
 

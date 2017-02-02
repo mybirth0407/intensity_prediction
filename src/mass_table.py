@@ -2,9 +2,6 @@
 Mass table of amino acids
 """
 
-# TODO: 여기 있는 mass 는 m/z 인가 m 인가
-# 그렇다면 min max feature 들은 m/z 으로 계산하는가 m 으로 계산하는가
-
 def get_aa_mass(aa):
   return aa_mass_table[aa]
 

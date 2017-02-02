@@ -9,11 +9,8 @@ import numpy as np
 import file_io as f
 import re
 
-# python unittest
-import pytest
 
 # LAPITSDPTEATAVGAVEASFK
-
 class Peptide:
   def __init__(self, peptide, charge, scan_num):
     self.peptide = self.get_strip_sequence(peptide)
