@@ -9,10 +9,10 @@ import numpy as np
 import file_io as f
 import re
 
-# DLGLPTEAYISVEEVHDDGTPTSK
+# python unittest
+import pytest
+
 # LAPITSDPTEATAVGAVEASFK
-
-
 
 class Peptide:
   def __init__(self, peptide, charge, scan_num):
@@ -49,7 +49,7 @@ class Peptide:
     
 
   """
-  Peak location features (3 * 1)
+  Peak location features
   """ 
   # (3 * 1)
   def get_peak_location_features(self, fragmentation_site, ion_type):
@@ -106,7 +106,7 @@ class Peptide:
 
 
   """
-  Peptide composition features ()
+  Peptide composition features
   """
   # (40 * 1)
   def get_composition_features(self, fragmentation_site):
@@ -147,7 +147,9 @@ class Peptide:
         self.hydpra(fragmentation_site),
         self.hydprd(fragmentation_site),
         self.hydn_x(fragmentation_site, x),
-        self.hydc_x(fragmentation_site, x)
+        self.hydc_x(fragmentation_site, x),
+        self.hydn_fragmentation_site(fragmentation_site),
+        self.hydc_fragmentation_site(fragmentation_site)
     ))
 
   # The sum of the hydrophobic amino acids in the fragment
@@ -187,11 +189,12 @@ class Peptide:
     return hydph.get_aa_hydph(self.peptide[fragmentation_site])\
          - hydph.get_aa_hydph(self.peptide[fragmentation_site - 1])
 
+
   # Hydrophobicity of the amino acid at the x-distance
   # from the fragmentation site to the c-term
   # (1 * 1)
   def hydn_x(self, fragmentation_site, x):
-    if fragmentation_site <= 0 or fragmentation_site >= self.length:
+    if fragmentation_site - x <= 0 or fragmentation_site - x >= self.length:
       return 0
 
     return hydph.get_aa_hydph(self.peptide[fragmentation_site - x])
@@ -200,36 +203,52 @@ class Peptide:
   # from the fragmentation site to the n-term
   # (1 * 1)
   def hydc_x(self, fragmentation_site, x):
-    if fragmentation_site <= 0 or fragmentation_site >= self.length:
+    if fragmentation_site + x <= 0 or fragmentation_site + x >= self.length:
       return 0
 
     return hydph.get_aa_hydph(self.peptide[fragmentation_site + x])
 
+  # Hydrophobicity of the amino acid at the fragmentation site to n-term
+  # (1 * 1)
+  def hydn_fragmentation_site(self, fragmentation_site):
+    if fragmentation_site <= 0 or fragmentation_site >= self.length:
+      return 0
+
+    return hydph.get_aa_hydph(self.peptide[fragmentation_site - 1])
+
+  # Hydrophobicity of the amino acid at the fragmentation site to c-term
+  # (1 * 1)
+  def hydc_fragmentation_site(self, fragmentation_site):
+    if fragmentation_site <= 0 or fragmentation_site >= self.length:
+      return 0
+
+    return hydph.get_aa_hydph(self.peptide[fragmentation_site])
 
   """
   Peptide common features
   """
   # (41 * 1)
   def get_peptide_common_features(self):
-    return np.mat((self.nterm_is_x(), self.cterm_is_x(), self.hydp()))
+    return np.mat((
+      self.nterm_is_x(), self.cterm_is_x(),
+      self.hydp(), self.sequence_info_n()
+    ))
 
   # n term is x
   # (20 * 1)
   def nterm_is_x(self):
     vector = [0] * 20
-    for i in range(0, 20):
-      vector[aa.get_aa(self.peptide[i])] += 1
+    vector[aa.get_aa(self.peptide[0])] = 1
     return vector
 
   # c term is x
   # (20 * 1)
   def cterm_is_x(self):
     vector = [0] * 20
-    for i in range(0, 20):
-      vector[aa.get_aa(self.peptide[i])] += 1
+    vector[aa.get_aa(self.peptide[self.length - 1])] = 1
     return vector
 
-  # hydph sum of peptide
+  # Hydph sum of peptide
   # (1 * 1)
   def hydp(self):
     s = 0
@@ -237,11 +256,26 @@ class Peptide:
       s += hydph.get_aa_hydph(aa)
     return s
 
+  # Intuitive sequence information
+  # (20 * peptide length - 1)
+  def sequence_info_n(self):
+    # peptide length limit is 10
+    vector = []
+    for i in range(1, self.length - 1):
+      v = [0] * 20
+      v[aa.get_aa(self.peptide[i])] = 1
+      vector.extend(v)
+    return vector
+
 p, c = f.read_tsv()
+
 pp = Peptide(p[0], c[0], 0)
 print(pp.peptide)
 print(pp.length)
-print(pp.get_peak_location_features(1, 'b'))
-print(pp.get_composition_features(1))
-print(pp.get_hyd_features(1, 'b', 2))
+
+for i in range(1, pp.length - 1):
+  print(pp.get_peak_location_features(i, 'b'))
+  print(pp.get_composition_features(i))
+  print(pp.get_hyd_features(i, 'b', 1))
 print(pp.get_peptide_common_features())
+
