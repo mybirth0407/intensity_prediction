@@ -43,7 +43,7 @@ class Peptide:
   def get_peak_features(self, peak, fragmentation_site, ion_type, x):
     features_vector = []
     return features_vector
-    
+
 
   """
   Peak location features
@@ -221,6 +221,7 @@ class Peptide:
 
     return hydph.get_aa_hydph(self.peptide[fragmentation_site])
 
+
   """
   Peptide common features
   """
@@ -228,7 +229,8 @@ class Peptide:
   def get_peptide_common_features(self):
     return np.mat((
       self.nterm_is_x(), self.cterm_is_x(),
-      self.hydp(), self.sequence_info_n()
+      self.hydp(), self.sequence_info(),
+      self.sequence_hydph_info()
     ))
 
   # n term is x
@@ -255,14 +257,21 @@ class Peptide:
 
   # Intuitive sequence information
   # (20 * peptide length - 1)
-  def sequence_info_n(self):
+  def sequence_info(self):
     # peptide length limit is 10
     vector = []
-    for i in range(1, self.length - 1):
+    for i in range(0, self.length):
       v = [0] * 20
       v[aa.get_aa(self.peptide[i])] = 1
       vector.extend(v)
     return vector
+
+  def sequence_hydph_info(self):
+    vector = []
+    for i in range(0, self.length):
+      vector.append(hydph.get_aa_hydph(self.peptide[i]))
+    return vector
+
 
 p, c = f.read_tsv()
 
