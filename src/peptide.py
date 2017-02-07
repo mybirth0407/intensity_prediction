@@ -40,7 +40,7 @@ class Peptide:
     return max(b, y)
 
 
-  def get_peak_features(self, peak, fragmentation_site, ion_type, x):
+  def get_peak_features(self, peak, fragmentation_site, ion_type, distance):
     features_vector = []
     return features_vector
 
@@ -138,13 +138,13 @@ class Peptide:
   Hydrophobicity
   """
   # (5 * 1)
-  def get_hyd_features(self, fragmentation_site, ion_type, x):
+  def get_hyd_features(self, fragmentation_site, ion_type, distance):
     return np.mat((
         self.hydf(fragmentation_site, ion_type),
         self.hydpra(fragmentation_site),
         self.hydprd(fragmentation_site),
-        self.hydn_x(fragmentation_site, x),
-        self.hydc_x(fragmentation_site, x),
+        self.hydn_x(fragmentation_site, distance),
+        self.hydc_x(fragmentation_site, distance),
         self.hydn_fragmentation_site(fragmentation_site),
         self.hydc_fragmentation_site(fragmentation_site)
     ))
@@ -190,17 +190,19 @@ class Peptide:
   # Hydrophobicity of the amino acid at the x-distance
   # from the fragmentation site to the c-term
   # (1 * 1)
-  def hydn_x(self, fragmentation_site, x):
-    if fragmentation_site - x <= 0 or fragmentation_site - x >= self.length:
+  def hydn_x(self, fragmentation_site, distance):
+    if fragmentation_site - distance <= 0
+      or fragmentation_site - distance >= self.length:
       return 0
 
-    return hydph.get_aa_hydph(self.peptide[fragmentation_site - x])
+    return hydph.get_aa_hydph(self.peptide[fragmentation_site - distance])
 
   # Hydrophobicity of the amino acid at the x-distance
   # from the fragmentation site to the n-term
   # (1 * 1)
-  def hydc_x(self, fragmentation_site, x):
-    if fragmentation_site + x <= 0 or fragmentation_site + x >= self.length:
+  def hydc_x(self, fragmentation_site, distance):
+    if fragmentation_site + distance <= 0 
+      or fragmentation_site + distance >= self.length:
       return 0
 
     return hydph.get_aa_hydph(self.peptide[fragmentation_site + x])
@@ -266,6 +268,8 @@ class Peptide:
       vector.extend(v)
     return vector
 
+  # Intuitive peptide hydrophobicity information
+  # (peptide length * 1)
   def sequence_hydph_info(self):
     vector = []
     for i in range(0, self.length):
