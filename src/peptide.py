@@ -64,9 +64,15 @@ class Peptide:
     peak_mass = 0
     if ion_type == 'b':
       for i in range(0, fragmentation_site):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
     elif ion_type == 'y':
       for i in range(fragmentation_site, self.length):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
     return peak_mass - self.min
 
@@ -78,9 +84,15 @@ class Peptide:
     peak_mass = 0
     if ion_type == 'b':
       for i in range(0, fragmentation_site):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
     elif ion_type == 'y':
       for i in range(fragmentation_site, self.length):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
     return self.max - peak_mass
 
@@ -92,9 +104,15 @@ class Peptide:
     peak_mass = 0
     if ion_type == 'b':
       for i in range(0, fragmentation_site):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
     elif ion_type == 'y':
       for i in range(fragmentation_site, self.length):
+        if self.peptide[i] == 'C':
+          peak_mass += 57.02146
+
         peak_mass += mass.get_aa_mass(self.peptide[i])
 
     return (peak_mass - self.min_peak_mass(fragmentation_site, ion_type))\
