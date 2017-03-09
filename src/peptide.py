@@ -6,19 +6,16 @@ import mass_table as mass
 import hydph_table as hydph
 import aa_table as aa
 import numpy as np
-import file_io as f
 import re
 
-
-# LAPITSDPTEATAVGAVEASFK
+# 'YALYDATYETK', 2
 class Peptide:
-  def __init__(self, peptide, charge, scan_num):
+  def __init__(self, peptide, charge):
     self.peptide = self.get_strip_sequence(peptide)
     self.charge = charge
     self.length = len(self.peptide)
     self.min = self.min_mass()
     self.max = self.max_mass()
-    self.scan_num = scan_num
 
   # get strip sequence
   def get_strip_sequence(self, peptide):
@@ -31,17 +28,24 @@ class Peptide:
     y = mass.get_aa_mass(self.peptide[self.length - 1])
     return min(b, y)
 
+  # max(b1 ion, y1 ion)
   def max_mass(self):
     b = 0
     y = 0
-    for i in range(0, len(self.peptide) - 1):
+    for i in range(len(self.peptide) - 1):
       b += mass.get_aa_mass(self.peptide[i])
       y += mass.get_aa_mass(self.peptide[i + 1])
     return max(b, y)
 
 
-  def get_peak_features(self, peak, fragmentation_site, ion_type, distance):
+  def get_features(self):
     features_vector = []
+
+    for i in range(1, self.length - 1):
+      features_vector.extend(self.get_peak_location_features(i, 'b'))
+      features_vector.extend(self.get_composition_features(i))
+      features_vector.extend(self.get_hyd_features(i, 'b', 1))
+    features_vector.extend(self.get_peptide_common_features())
     return features_vector
 
 
@@ -50,11 +54,10 @@ class Peptide:
   """ 
   # (3 * 1)
   def get_peak_location_features(self, fragmentation_site, ion_type):
-    return np.mat((
-        self.min_peak_mass(fragmentation_site, ion_type),
-        self.max_peak_mass(fragmentation_site, ion_type),
-        self.relative_peak_mass(fragmentation_site, ion_type)
-    ))
+    # [float, float, float]
+    return [self.min_peak_mass(fragmentation_site, ion_type),
+            self.max_peak_mass(fragmentation_site, ion_type),
+            self.relative_peak_mass(fragmentation_site, ion_type)]
 
   # (1 * 1)
   def min_peak_mass(self, fragmentation_site, ion_type):
@@ -63,7 +66,7 @@ class Peptide:
 
     peak_mass = 0
     if ion_type == 'b':
-      for i in range(0, fragmentation_site):
+      for i in range(fragmentation_site):
         if self.peptide[i] == 'C':
           peak_mass += 57.02146
 
@@ -83,7 +86,7 @@ class Peptide:
 
     peak_mass = 0
     if ion_type == 'b':
-      for i in range(0, fragmentation_site):
+      for i in range(fragmentation_site):
         if self.peptide[i] == 'C':
           peak_mass += 57.02146
 
@@ -103,7 +106,7 @@ class Peptide:
 
     peak_mass = 0
     if ion_type == 'b':
-      for i in range(0, fragmentation_site):
+      for i in range(fragmentation_site):
         if self.peptide[i] == 'C':
           peak_mass += 57.02146
 
@@ -115,7 +118,9 @@ class Peptide:
 
         peak_mass += mass.get_aa_mass(self.peptide[i])
 
-    return (peak_mass - self.min_peak_mass(fragmentation_site, ion_type))\
+    # (peak_mass - min peak) / (max peak - min peak) 
+    return (peak_mass
+          - self.min_peak_mass(fragmentation_site, ion_type))\
          / (self.max_peak_mass(fragmentation_site, ion_type)
           - self.min_peak_mass(fragmentation_site, ion_type))
 
@@ -125,7 +130,8 @@ class Peptide:
   """
   # (40 * 1)
   def get_composition_features(self, fragmentation_site):
-    return np.mat((self.n_x(fragmentation_site) + self.c_x(fragmentation_site)))
+    # [] + []
+    return self.n_x(fragmentation_site) + self.c_x(fragmentation_site)
 
   # number of x from n-term to fragmentation_site
   # (20 * 1)
@@ -135,7 +141,7 @@ class Peptide:
 
     vector = [0] * 20
     # amino acids before fragmentation site
-    for i in range(0, fragmentation_site):
+    for i in range(fragmentation_site):
       vector[aa.get_aa(self.peptide[i])] += 1
     return vector
 
@@ -153,19 +159,18 @@ class Peptide:
 
 
   """
-  Hydrophobicity
+  Peptide Hydrophobicity Features
   """
   # (5 * 1)
   def get_hyd_features(self, fragmentation_site, ion_type, distance):
-    return np.mat((
-        self.hydf(fragmentation_site, ion_type),
-        self.hydpra(fragmentation_site),
-        self.hydprd(fragmentation_site),
-        self.hydn_x(fragmentation_site, distance),
-        self.hydc_x(fragmentation_site, distance),
-        self.hydn_fragmentation_site(fragmentation_site),
-        self.hydc_fragmentation_site(fragmentation_site)
-    ))
+    # float, float, float, float, float, float, float
+    return [self.hydf(fragmentation_site, ion_type),
+            self.hydpra(fragmentation_site),
+            self.hydprd(fragmentation_site),
+            self.hydn_x(fragmentation_site, distance),
+            self.hydc_x(fragmentation_site, distance),
+            self.hydn_fragmentation_site(fragmentation_site),
+            self.hydc_fragmentation_site(fragmentation_site)]
 
   # The sum of the hydrophobic amino acids in the fragment
   # (1 * 1)
@@ -175,7 +180,7 @@ class Peptide:
 
     s = 0
     if ion_type == 'b':
-      for i in range(0, fragmentation_site):
+      for i in range(fragmentation_site):
         h = hydph.get_aa_hydph(self.peptide[i])
         s += h
     elif ion_type == 'y':
@@ -209,7 +214,7 @@ class Peptide:
   # from the fragmentation site to the c-term
   # (1 * 1)
   def hydn_x(self, fragmentation_site, distance):
-    if fragmentation_site - distance <= 0
+    if fragmentation_site - distance <= 0\
       or fragmentation_site - distance >= self.length:
       return 0
 
@@ -219,11 +224,11 @@ class Peptide:
   # from the fragmentation site to the n-term
   # (1 * 1)
   def hydc_x(self, fragmentation_site, distance):
-    if fragmentation_site + distance <= 0 
+    if fragmentation_site + distance <= 0\
       or fragmentation_site + distance >= self.length:
       return 0
 
-    return hydph.get_aa_hydph(self.peptide[fragmentation_site + x])
+    return hydph.get_aa_hydph(self.peptide[fragmentation_site + distance])
 
   # Hydrophobicity of the amino acid at the fragmentation site to n-term
   # (1 * 1)
@@ -245,13 +250,12 @@ class Peptide:
   """
   Peptide common features
   """
-  # (41 * 1)
+  # (41 + 20 * (peptide length* 1)
   def get_peptide_common_features(self):
-    return np.mat((
-      self.nterm_is_x(), self.cterm_is_x(),
-      self.hydp(), self.sequence_info(),
-      self.sequence_hydph_info()
-    ))
+    # [] + [] + [float] + [] + []
+    return self.nterm_is_x() + self.cterm_is_x() + [self.hydp()]\
+         + self.sequence_info() + self.sequence_hydph_info()
+
 
   # n term is x
   # (20 * 1)
@@ -276,11 +280,11 @@ class Peptide:
     return s
 
   # Intuitive sequence information
-  # (20 * peptide length - 1)
+  # (20 * (peptide length - 1))
   def sequence_info(self):
-    # peptide length limit is 10
+    # peptide length limit is 11
     vector = []
-    for i in range(0, self.length):
+    for i in range(self.length):
       v = [0] * 20
       v[aa.get_aa(self.peptide[i])] = 1
       vector.extend(v)
@@ -290,20 +294,10 @@ class Peptide:
   # (peptide length * 1)
   def sequence_hydph_info(self):
     vector = []
-    for i in range(0, self.length):
+    for i in range(self.length):
       vector.append(hydph.get_aa_hydph(self.peptide[i]))
     return vector
 
-
-p, c = f.read_tsv()
-
-pp = Peptide(p[0], c[0], 0)
-print(pp.peptide)
-print(pp.length)
-
-for i in range(1, pp.length - 1):
-  print(pp.get_peak_location_features(i, 'b'))
-  print(pp.get_composition_features(i))
-  print(pp.get_hyd_features(i, 'b', 1))
-print(pp.get_peptide_common_features())
-
+# p = Peptide('YALYDATYETK', 2)
+# print(p.get_all_features())
+# print(len(p.get_all_features()))
