@@ -8,7 +8,6 @@ import aa_table as aa
 import numpy as np
 import re
 
-# 'YALYDATYETK', 2
 class Peptide:
   def __init__(self, peptide, charge):
     self.peptide = self.get_strip_sequence(peptide)

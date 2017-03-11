@@ -93,3 +93,4 @@ tensorflow/
 # data file
 PeptideSearchResult/
 *.tsv
+*.txt
