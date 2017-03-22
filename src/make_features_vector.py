@@ -1,5 +1,6 @@
 import peptide
 
+# peptide_length_charge_qvalue.tsv
 fr = [open('peptide_11_2_000.tsv', 'rt', encoding='utf-8'),
       open('peptide_11_2_001.tsv', 'rt', encoding='utf-8'),
       open('peptide_11_3_000.tsv', 'rt', encoding='utf-8'),
@@ -19,7 +20,9 @@ for i in range(6):
     if step == 100: break;
     l = line.split('\t')
     p = peptide.Peptide(l[9], l[8])
-    fw[i].write(str(p.get_features()))
+    fv = p.get_features()
+    for e in fv:
+      fw[i].write(str(e) + '\t')
     fw[i].write('\n')
     step += 1
     print(step)
