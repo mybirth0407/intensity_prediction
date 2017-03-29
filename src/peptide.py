@@ -255,7 +255,6 @@ class Peptide:
     return self.nterm_is_x() + self.cterm_is_x() + [self.hydp()]\
          + self.sequence_info() + self.sequence_hydph_info()
 
-
   # n term is x
   # (20 * 1)
   def nterm_is_x(self):
@@ -296,7 +295,3 @@ class Peptide:
     for i in range(self.length):
       vector.append(hydph.get_aa_hydph(self.peptide[i]))
     return vector
-
-# p = Peptide('YALYDATYETK', 2)
-# print(p.get_all_features())
-# print(len(p.get_all_features()))
