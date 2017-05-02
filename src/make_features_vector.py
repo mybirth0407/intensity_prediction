@@ -86,9 +86,9 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
           for inten in intensity:
             ffi.write(str(inten) + ' ')
           ffi.write('\n')
+          step += 1
       ffi.close()
       fe.close()
-    step += 1
   print(error)
 
 features_and_intensity('../Search_Results/LabelFree_Result_CPTAC',
