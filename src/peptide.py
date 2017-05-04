@@ -160,7 +160,7 @@ class Peptide:
   """
   Peptide Hydrophobicity Features
   """
-  # (5 * 1)
+  # (7 * 1)
   def get_hyd_features(self, fragmentation_site, ion_type, distance):
     # float, float, float, float, float, float, float
     return [self.hydf(fragmentation_site, ion_type),
