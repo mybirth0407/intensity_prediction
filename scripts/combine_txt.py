@@ -1,7 +1,9 @@
 from os import listdir
+from os import remove
 import csv
 import sys
 
+remove(sys.argv[2])
 directory = listdir(sys.argv[1])
 csv_contents = []
 for file in directory:
