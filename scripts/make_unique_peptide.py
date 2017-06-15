@@ -4,6 +4,8 @@ import csv
 import sys
 import numpy as np
 
+# sys.argv[1]: old file, sys.argv[2]: new file
+
 f_old = open(sys.argv[1], 'rt', encoding='utf-8')
 feature_dict = {}
 key_dict = {}

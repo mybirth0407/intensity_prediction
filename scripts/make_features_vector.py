@@ -3,8 +3,9 @@ from os import listdir
 import re
 import peptide
 import time
+import sys
 
-# 0 file 2 scannum 8 charge 9 peptide 15 qvalue
+# 0: file 2: scannum 8: charge 9: peptide 15: qvalue
 EXTRACTED = '_ExtractedFeature.tsv'
 
 def get_strip_sequence(peptide):
@@ -16,11 +17,13 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
   directory = listdir(dir_path)
   directory.sort()
   step = 0
+  error_list = []
+  zero_sequence = []
 
   for file in directory:
-    print(step)
     # If result file, not extracted file
     if file.find('MergedFDR.tsv') != -1:
+      print(step)
       # Result file open
       fr = open(dir_path + '/' + file)
       fr.readline()
@@ -61,12 +64,14 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
             # b ions
             extracts[temp_key][int(l[0][1: ]) - 1] = float(l[2])
         except:
+          error_list.append(fe.name)
           print(fe.name)
           print(l)
           error += 1
 
       feat_inten_file_name = file[: file.find('MSGF')]
-      ffi = open('../data/' + feat_inten_file_name
+      ffi = open('../data/' + ion_type + '/'
+               + feat_inten_file_name
                + str(length) + '_'
                + str(charge) + '_'
                + str(qvalue) + '.txt',
@@ -83,15 +88,36 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
 
           for feature in feat:
             ffi.write(str(feature) + ' ')
+
+          inten_sum = 0
           for inten in intensity:
             ffi.write(str(inten) + ' ')
+            inten_sum += float(inten)
+
+          if inten_sum == 0:
+            zero_sequence.append(result[3])
+
           ffi.write('\n')
           step += 1
       ffi.close()
       fe.close()
   print(error)
 
-features_and_intensity('../Search_Results/LabelFree_Result_CPTAC',
-                       charge=2, length=11, qvalue=0.01, ion_type='b')
-features_and_intensity('../Search_Results/LabelFree_Result_PRIDE',
-                       charge=2, length=11, qvalue=0.01, ion_type='b')
+  f_error = open('../data/' + ion_type + '/'
+               + sys.argv[1][-5:] + '_error.txt',
+                 'wt', encoding='utf-8')
+  for error in error_list:
+    f_error.write(error + '\n')
+  f_error.close()
+
+  f_zero_sequence = open('../data/' + ion_type + '/'
+                       + sys.argv[1][-5:] + '_zeros.txt',
+                         'wt', encoding='utf-8')
+  for sequence in zero_sequence:
+    f_zero_sequence.write(sequence + '\n')
+  f_zero_sequence.close()
+
+
+# ../resource/LabelFree_Result_CPTAC b
+features_and_intensity(sys.argv[1],
+                       charge=2, length=11, qvalue=0.01, ion_type=sys.argv[2])

@@ -45,7 +45,7 @@ predict = model.predict(x_test, batch_size=32)
 print("\n%s: %.5f%%" % (model.metrics_names[1], scores[1] * 100))
 
 # write the result file
-f = open('small_result.txt', 'wt', encoding='utf-8')
+f = open('result.txt', 'wt', encoding='utf-8')
 for i in range(len(y_test)):
   f.write(str(i + 1) + '.\n')
   f.write('real:\t' + str(y_test[i]) + '\n')
