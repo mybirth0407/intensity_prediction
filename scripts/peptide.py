@@ -9,9 +9,10 @@ import numpy as np
 import re
 
 class Peptide:
-  def __init__(self, peptide, charge):
+  def __init__(self, peptide, charge, ion_type):
     self.peptide = self.get_strip_sequence(peptide)
     self.charge = charge
+    self.ion_type = ion_type
     self.length = len(self.peptide)
     self.min = self.min_mass()
     self.max = self.max_mass()
@@ -41,9 +42,9 @@ class Peptide:
     features_vector = []
 
     for i in range(1, self.length - 1):
-      features_vector.extend(self.get_peak_location_features(i, 'b'))
+      features_vector.extend(self.get_peak_location_features(i, ion_type))
       features_vector.extend(self.get_composition_features(i))
-      features_vector.extend(self.get_hyd_features(i, 'b', 1))
+      features_vector.extend(self.get_hyd_features(i, ion_type, 1))
     features_vector.extend(self.get_peptide_common_features())
     return features_vector
 

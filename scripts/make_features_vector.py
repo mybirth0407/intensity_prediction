@@ -1,4 +1,3 @@
-import peptide
 from os import listdir
 import re
 import peptide
@@ -79,7 +78,7 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
       for result in results:
         # Write each file separately
         # 2: charge, 3: peptide
-        p = peptide.Peptide(result[3], result[2])
+        p = peptide.Peptide(result[3], result[2], ion_type)
         feat = p.get_features()
         # 0: specfile, 2: peptide, 3: qvalue
         key = result[0] + result[1]

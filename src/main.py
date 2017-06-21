@@ -136,7 +136,7 @@ def write_stats(file_name, score):
   stats_file.write(str(np.sqrt(score[1])) + '\n')
   stats_file.close()
 
-# Need to modify..
+# TODO: Need to modify..
 def set_rank(arr):
   ranks = np.zeros(arr.shape, dtype='int')
   for i in range(len(arr)):
