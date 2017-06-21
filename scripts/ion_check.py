@@ -1,6 +1,8 @@
 import numpy as np
 import sys
 
+# usage: [input file] [result file] [ion type]
+
 def count_zero(input_file, result_file, ion_type):
   data = np.loadtxt(input_file, dtype='float32')
   intensities = data[:, -10:]
