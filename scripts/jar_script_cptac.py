@@ -1,13 +1,14 @@
 from os import listdir
 import os
+import sys
 
 # External hard disk location
 EXTUSB = '~/media/extusb'
 
-directory = listdir('./LabelFree_Result_CPTAC')
 file_list = []
 folder_list = []
 
+directory = listdir(sys.argv[1])
 for tsv_file in directory:
   index = tsv_file.find('_MSGF_')
   # _MSGF_ is exist

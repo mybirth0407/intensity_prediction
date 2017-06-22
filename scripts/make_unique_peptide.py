@@ -19,9 +19,9 @@ for line in f_old.readlines():
   if len(l) < 1:
     continue
 
-  input_vector = l.split()[: 722]
+  input_vector = l.split()[: 772]
   key = ' '.join(str(x) for x in input_vector)
-  output_vector_ = [float(e) for e in l.split()[722: 732]]
+  output_vector_ = [float(e) for e in l.split()[772: 782]]
   output_vector = np.array(output_vector_).astype('float32')
   if key in feature_dict:
     feature_dict[key] += output_vector

@@ -61,7 +61,7 @@ def main(argv):
 
 def load_data(data_file):
   data = np.loadtxt(data_file, dtype='float64')
-  x = data[:, 0:722]
+  x = data[:, 0:772]
   y = data[:, -10:]
   return x, y
 
@@ -69,7 +69,7 @@ def create_model():
   # create model
   model = Sequential()
   
-  model.add(Dense(722, input_dim=722, init='uniform', activation='relu'))
+  model.add(Dense(772, input_dim=772, init='uniform', activation='relu'))
   model.add(Dense(600, init='uniform', activation='relu'))
   model.add(Dropout(0.2))
   model.add(Dense(550, init='uniform', activation='relu'))
@@ -130,7 +130,7 @@ def write_rank(file_name, n, y, predict):
   rank_file.close()
 
 # argv[6]
-def write_stats(file_name, score):
+def write_stats(file_name, n, score):
   stats_file = open(file_name + '_' + str(n) + '.txt', 'wt', encoding='utf-8')
   stats_file.write('test error\n')
   stats_file.write(str(np.sqrt(score[1])) + '\n')

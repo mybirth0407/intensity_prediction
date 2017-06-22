@@ -41,10 +41,10 @@ class Peptide:
   def get_features(self):
     features_vector = []
 
-    for i in range(1, self.length - 1):
-      features_vector.extend(self.get_peak_location_features(i, ion_type))
+    for i in range(1, self.length):
+      features_vector.extend(self.get_peak_location_features(i, self.ion_type))
       features_vector.extend(self.get_composition_features(i))
-      features_vector.extend(self.get_hyd_features(i, ion_type, 1))
+      features_vector.extend(self.get_hyd_features(i, self.ion_type, 1))
     features_vector.extend(self.get_peptide_common_features())
     return features_vector
 
@@ -250,7 +250,7 @@ class Peptide:
   """
   Peptide common features
   """
-  # (41 + 20 * (peptide length* 1)
+  # (41 + 20 * (peptide length)
   def get_peptide_common_features(self):
     # [] + [] + [float] + [] + []
     return self.nterm_is_x() + self.cterm_is_x() + [self.hydp()]\

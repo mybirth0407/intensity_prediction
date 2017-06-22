@@ -4,12 +4,12 @@ import sys
 # usage: [features file] [write file]
 
 data = np.loadtxt(sys.argv[1], dtype='float64')
-features = data[:, 0:722]
+features = data[:, 0:772]
 # i'th, min, max, zero count
 test_list = []
 
 
-for i in range(722):
+for i in range(772):
   temp = []
   sf = features[:, i]
   temp.append(i)
