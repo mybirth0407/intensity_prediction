@@ -7,6 +7,7 @@ EXTUSB = '~/media/extusb'
 
 file_list = []
 folder_list = []
+# ./LabelFree_Result_PRIDE
 directory = listdir(sys.argv[1])
 
 for tsv_file in directory:
@@ -16,9 +17,9 @@ for tsv_file in directory:
     # Remove after _MSGF_
     tsv_file = tsv_file[0: index]
   # File name - _MSGF_Merged.tsv
-  file_list.append('./LabelFree_Result_PRIDE/' + tsv_file)
+  file_list.append(sys.argv[1] + '/' + tsv_file)
 
-f = open('mgf_location_table.txt')
+f = open('./mgf_location_table.txt')
 
 for line in f.readlines():
   # Last line
@@ -35,8 +36,8 @@ for line in f.readlines():
   folder_list.append(line)
 f.close()
 
-ffile = open('file.txt', 'wt', encoding='utf-8')
-ffolder = open('folder.txt', 'wt', encoding='utf-8')
+ffile = open('./file.txt', 'wt', encoding='utf-8')
+ffolder = open('./folder.txt', 'wt', encoding='utf-8')
 ffile.write(str(file_list))
 ffolder.write(str(folder_list))
 ffile.close()
