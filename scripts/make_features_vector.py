@@ -7,6 +7,13 @@ import sys
 # 0: file 2: scannum 8: charge 9: peptide 15: qvalue
 EXTRACTED = '_ExtractedFeature.tsv'
 
+
+# Usage Ex: Python make_features_vector.py LabelFree_Result_CPTAC y
+def main(argv):
+  features_and_intensity(
+      sys.argv[1], charge=2, length=11, qvalue=0.01, ion_type=sys.argv[2])
+
+
 def get_strip_sequence(peptide):
     p = re.compile("[^a-zA-Z]")
     return p.sub('', peptide)
@@ -116,7 +123,5 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
     f_zero_sequence.write(sequence + '\n')
   f_zero_sequence.close()
 
-
-# ../resource/LabelFree_Result_CPTAC b
-features_and_intensity(sys.argv[1],
-                       charge=2, length=11, qvalue=0.01, ion_type=sys.argv[2])
+if __name__ == '__main__':
+  main(sys.argv)

@@ -5,6 +5,14 @@ import re
 
 NUM_OF_FILES = 6
 
+# Usage Ex: TODO
+def main()
+  f = open('peptide_stats.txt', 'wt', encoding='utf-8')
+  for i in range(NUM_OF_FILES):
+    f.write(str(cnt[i]) + '\n')
+  f.close()
+
+
 def check_modification(peptide):
   p = re.compile('[^a-zA-Z]')
   strip_peptide = p.sub('', peptide)
@@ -62,8 +70,3 @@ for directory in dir_list:
             cnt[5] += 1
       step += 1
       print(step)
-
-f = open('peptide_stats.txt', 'wt', encoding='utf-8')
-
-for i in range(NUM_OF_FILES):
-  f.write(str(cnt[i]) + '\n')

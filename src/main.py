@@ -25,6 +25,7 @@ import math
 # Use K-fold
 from sklearn.model_selection import KFold
 
+FEATURES_LEN = 772
 
 # epochs, batch size
 # data(include '.txt'),
@@ -61,7 +62,7 @@ def main(argv):
 
 def load_data(data_file):
   data = np.loadtxt(data_file, dtype='float64')
-  x = data[:, 0:772]
+  x = data[:, 0:FEATURES_LEN]
   y = data[:, -10:]
   return x, y
 
@@ -69,7 +70,8 @@ def create_model():
   # create model
   model = Sequential()
   
-  model.add(Dense(772, input_dim=772, init='uniform', activation='relu'))
+  model.add(Dense(
+      FEATURES_LEN, input_dim=FEATURES_LEN, init='uniform', activation='relu'))
   model.add(Dense(600, init='uniform', activation='relu'))
   model.add(Dropout(0.2))
   model.add(Dense(500, init='uniform', activation='relu'))

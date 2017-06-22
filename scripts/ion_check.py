@@ -1,7 +1,10 @@
 import numpy as np
 import sys
 
-# usage: [input file] [result file] [ion type]
+# Usage Ex: python ion_check.py y_unique.txt y_check.txt y
+def main(argv):
+  count_zero(argv[1], argv[2], argv[3])
+  
 
 def count_zero(input_file, result_file, ion_type):
   data = np.loadtxt(input_file, dtype='float32')
@@ -24,4 +27,5 @@ def count_zero(input_file, result_file, ion_type):
   f.write(str(non_zeros) + '\n')
   return zeros, non_zeros
 
-count_zero(sys.argv[1], sys.argv[2], sys.argv[3])
+if __name__ == '__main__':
+  main(sys.argv)

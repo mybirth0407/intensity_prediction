@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 
 
-# [result file] [output file]
+# Usage Ex: python result_stats.py result.txt stats.txt
 def main(argv):
   real, pred = file2array(sys.argv[1], ignore_zero=False)
 
@@ -71,4 +71,3 @@ def file2array(file, ignore_zero=True):
 
 if __name__ == '__main__':
   main(sys.argv)
-  
