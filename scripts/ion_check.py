@@ -7,7 +7,7 @@ def main(argv):
   
 
 def count_zero(input_file, result_file, ion_type):
-  data = np.loadtxt(input_file, dtype='float32')
+  data = np.loadtxt(input_file, dtype='float64')
   intensities = data[:, -10:]
   zeros = [0] * 10
   non_zeros = [0] * 10
