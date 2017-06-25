@@ -5,7 +5,7 @@ FEATURE_LEN = 772
 
 # Usage Ex: y_unique.txt y_feat_test.txt
 def main(argv):
-  data = np.loadtxt(sys.argv[1], dtype='float64')
+  data = np.loadtxt(argv[1], dtype='float64')
   features = data[:, 0:FEATURE_LEN]
   # i'th, min, max, zero count
   test_list = []
@@ -19,7 +19,7 @@ def main(argv):
     temp.append(len(sf) - len(np.nonzero(sf)[0]))
     test_list.append(temp)
 
-  f = open(sys.argv[2], 'wt', encoding='utf-8')
+  f = open(argv[2], 'wt', encoding='utf-8')
 
   f.write(str(len(features))+ '\n')
   for t in test_list:

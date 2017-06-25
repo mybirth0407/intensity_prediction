@@ -3,7 +3,7 @@ from os import remove
 import csv
 import sys
 
-# Usage Ex: python combine_txt.py HCD HCD/all.txt
+# Usage Ex: python combine_txt.py HCD all.txt
 def main(argv):
   # file already exist, remove that file
   try:

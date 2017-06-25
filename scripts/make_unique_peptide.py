@@ -6,9 +6,9 @@ import numpy as np
 
 
 # Usage Ex: python make_unique_peptide.py all.txt unique.txt
-def main():
+def main(argv):
   # sys.argv[1]: old file, sys.argv[2]: new file
-  f_old = open(sys.argv[1], 'rt', encoding='utf-8')
+  f_old = open(argv[1], 'rt', encoding='utf-8')
   feature_dict = {}
   key_dict = {}
 
@@ -37,7 +37,7 @@ def main():
   for key in feature_dict:
     feature_dict[key] /= key_dict[key]
 
-  f_new = open(sys.argv[2], 'wt', encoding='utf-8')
+  f_new = open(argv[2], 'wt', encoding='utf-8')
 
   for key in feature_dict:
     f_new.write(key + ' ')
@@ -45,3 +45,6 @@ def main():
       f_new.write(str(e) + ' ')
     f_new.write('\n')
   f_new.close()
+
+if __name__ == '__main__':
+  main(sys.argv)

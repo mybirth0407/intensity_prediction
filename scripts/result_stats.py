@@ -7,13 +7,11 @@ from math import sqrt
 
 # Usage Ex: python result_stats.py result.txt stats.txt
 def main(argv):
-  real, pred = file2array(sys.argv[1], ignore_zero=False)
+  real, pred = file2array(argv[1], ignore_zero=False)
 
   rmses = np.zeros((10,), dtype='float64')
   variances = np.zeros((10,), dtype='float64')
   cosines = np.zeros((10,), dtype='float64')
-
-  print(pred[:, 0])
 
   for i in range(10):
     rmses[i] = sqrt(mean_squared_error(real[:, i], pred[:, i]))

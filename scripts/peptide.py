@@ -250,7 +250,7 @@ class Peptide:
   """
   Peptide common features
   """
-  # (41 + 20 * (peptide length)
+  # (41 + 21 * (peptide length)
   def get_peptide_common_features(self):
     # [] + [] + [float] + [] + []
     return self.nterm_is_x() + self.cterm_is_x() + [self.hydp()]\
@@ -279,7 +279,7 @@ class Peptide:
     return s
 
   # Intuitive sequence information
-  # (20 * (peptide length - 1))
+  # (20 * peptide length)
   def sequence_info(self):
     # peptide length limit is 11
     vector = []
