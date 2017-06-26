@@ -7,7 +7,7 @@ from math import sqrt
 
 # Usage Ex: python result_stats.py result.txt stats.txt
 def main(argv):
-  real, pred = file2array(argv[1], ignore_zero=False)
+  real, pred = file2array(argv[1], ignore_zero=True)
 
   rmses = np.zeros((10,), dtype='float64')
   variances = np.zeros((10,), dtype='float64')
