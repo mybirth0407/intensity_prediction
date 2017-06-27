@@ -28,7 +28,7 @@ class Peptide:
     y = mass.get_aa_mass(self.peptide[self.length - 1])
     return min(b, y)
 
-  # max(b1 ion, y1 ion)
+  # max(b1 to b9 ion, y1 to y9 ion)
   def max_mass(self):
     b = 0
     y = 0

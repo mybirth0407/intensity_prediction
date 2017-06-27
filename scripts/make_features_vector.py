@@ -109,6 +109,7 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
       fe.close()
   print(error)
 
+  # if file is broken
   f_error = open('../data/' + ion_type + '/'
                + sys.argv[1][-5:] + '_error.txt',
                  'wt', encoding='utf-8')
@@ -116,6 +117,7 @@ def features_and_intensity(dir_path, charge, length, qvalue, ion_type):
     f_error.write(error + '\n')
   f_error.close()
 
+  # all intensities are zero
   f_zero_sequence = open('../data/' + ion_type + '/'
                        + sys.argv[1][-5:] + '_zeros.txt',
                          'wt', encoding='utf-8')

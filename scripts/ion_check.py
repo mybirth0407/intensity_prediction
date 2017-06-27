@@ -1,12 +1,12 @@
 import numpy as np
 import sys
 
-# Usage Ex: python ion_check.py y_unique.txt y_check.txt y
+# Usage Ex: python ion_check.py y_unique.txt y_check.txt
 def main(argv):
-  count_zero(argv[1], argv[2], argv[3])
+  count_zero(argv[1], argv[2])
   
 
-def count_zero(input_file, result_file, ion_type):
+def count_zero(input_file, result_file):
   data = np.loadtxt(input_file, dtype='float64')
   intensities = data[:, -10:]
   zeros = [0] * 10
