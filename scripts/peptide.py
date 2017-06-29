@@ -25,16 +25,26 @@ class Peptide:
   # min(b1 ion, y1 ion)
   def min_mass(self):
     b = mass.get_aa_mass(self.peptide[0])
+    if self.peptide[0] == 'C':
+      b += 57.02146
+
     y = mass.get_aa_mass(self.peptide[self.length - 1])
+    if self.peptide[self.length - 1] == 'C':
+      y += 57.02146
     return min(b, y)
 
-  # max(b1 to b9 ion, y1 to y9 ion)
+  # max(b10 ion, y10 ion)
   def max_mass(self):
     b = 0
     y = 0
-    for i in range(len(self.peptide) - 1):
+    for i in range(self.length - 1):
       b += mass.get_aa_mass(self.peptide[i])
+      if self.peptide[i] == 'C':
+        b += 57.02146
+
       y += mass.get_aa_mass(self.peptide[i + 1])
+      if self.peptide[i + 1] == 'C':
+        y += 57.02146
     return max(b, y)
 
 

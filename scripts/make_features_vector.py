@@ -11,7 +11,7 @@ EXTRACTED = '_ExtractedFeature.tsv'
 # Usage Ex: Python make_features_vector.py LabelFree_Result_CPTAC y
 def main(argv):
   features_and_intensity(
-      sys.argv[1], charge=2, length=11, qvalue=0.01, ion_type=sys.argv[2])
+      argv[1], charge=2, length=11, qvalue=0.01, ion_type=argv[2])
 
 
 def get_strip_sequence(peptide):
