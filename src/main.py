@@ -70,24 +70,8 @@ def create_model(learning_rate):
   
   model.add(Dense(FEATURES_LEN, input_dim=FEATURES_LEN,
       init='uniform', activation='relu'))
-  model.add(Dense(600, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(500, init='uniform', activation='relu'))
-  model.add(Dense(100, init='uniform', activation='relu'))
+  model.add(Dense(200, init='uniform', activation='relu'))
+  model.add(Dense(200, init='uniform', activation='relu'))
   model.add(Dense(10, activation='relu'))
 
   adam = optimizers.Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999,
