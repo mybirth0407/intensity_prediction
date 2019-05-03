@@ -1,4 +1,4 @@
-# DeepLearning-Proteomics
+# Intensity of mass spectrum prediction
 Deep learning project for predicting fragment ion's intensity of theoretical spectrum
 
 project directory
@@ -11,4 +11,6 @@ project directory
 |-- src
     |-- main.py # learning and inference using DNN
 
-This project is a graduation project for the semester of 2017-1. (Professor Eunok Paek) The protein sequence was converted into a feature vector by feature engineering and then model learned and inferred using deep learning. Although the result was not good, it was first tried in the BIS LAB. and it was selected as the excellent work.
+This project is a graduation project for the semester of 2017-1. (Professor Eunok Paek)
+The protein sequence was converted into a feature vector by feature engineering and then model learned and inferred using deep learning.
+Although the result was not good, it was first tried in the BIS LAB. and it was selected as the excellent graduated project.
